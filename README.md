@@ -1,35 +1,29 @@
-This is a Kotlin Multiplatform project targeting Android, iOS.
+这是一个面向 Android 和 iOS 的 Kotlin Multiplatform 项目。
 
-* [/iosApp](./iosApp/iosApp) contains an iOS application. Even if you’re sharing your UI with Compose Multiplatform,
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+* [/iosApp](./iosApp/iosApp) 包含 iOS 应用。即使使用 Compose Multiplatform 共享 UI，仍需要这个入口来启动 iOS 应用，也可以在这里添加 SwiftUI 代码。
 
-* [/shared](./shared/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - [commonMain](./shared/src/commonMain/kotlin) is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    the [iosMain](./shared/src/iosMain/kotlin) folder would be the right place for such calls.
-    Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./shared/src/jvmMain/kotlin)
-    folder is the appropriate location.
+* [/shared](./shared/src) 用于在 Compose Multiplatform 应用之间共享的代码，包含以下子目录：
+  - [commonMain](./shared/src/commonMain/kotlin) 存放所有目标平台共用的代码。
+  - 其他目录存放仅针对对应平台编译的 Kotlin 代码。例如，若要在 iOS 端使用 Apple 的 CoreCrypto，可在 [iosMain](./shared/src/iosMain/kotlin) 中编写；若需编写 Desktop（JVM）相关代码，则使用 [jvmMain](./shared/src/jvmMain/kotlin)。
 
-### Running the apps
+### 运行应用
 
-Use the run configurations provided by the run widget in your IDE's toolbar. You can also use these commands and options:
+可使用 IDE 工具栏运行配置中的选项，也可执行以下命令：
 
-- Android app: `./gradlew :androidApp:assembleDebug`
-- iOS app: open the [/iosApp](./iosApp) directory in Xcode and run it from there.
+- Android：`./gradlew :androidApp:assembleDebug`
+- iOS：在 Xcode 中打开 [/iosApp](./iosApp) 目录并运行。
 
-### Running tests
+### 运行测试
 
-Use the run button in your IDE's editor gutter, or run tests using Gradle tasks:
+可在 IDE 编辑器行号旁点击运行按钮，或执行以下 Gradle 任务：
 
-- Android tests: `./gradlew :shared:testAndroidHostTest`
-- iOS tests: `./gradlew :shared:iosSimulatorArm64Test`
+- Android 测试：`./gradlew :shared:testAndroidHostTest`
+- iOS 测试：`./gradlew :shared:iosSimulatorArm64Test`
 
-### Documentation
+### 文档
 
 - [微信支付 APP 支付](./docs/wechat-pay-app.md) — 接入说明与官方文档索引
 
 ---
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+了解更多：[Kotlin Multiplatform 入门](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)
