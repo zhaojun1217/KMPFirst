@@ -8,17 +8,18 @@ alwaysApply: false
 
 ## 模块职责
 
-- `shared/` 是跨平台代码的唯一归属，业务逻辑、UI、数据层均放此处
-- `androidApp/`、`iosApp/` 只做入口薄封装（Activity、Swift 桥接），不写业务逻辑
+- `shared/` 只放跨平台业务逻辑（Repository、ViewModel、模型、桥接层），**不放 UI**
+- `androidApp/` 使用 **Compose** 编写 Android UI
+- `iosApp/` 使用 **SwiftUI** 编写 iOS UI，通过 `LoginBridge` 等调用 shared 逻辑
 - 包名统一为 `com.zhaojun.kmpfirst`
 
 ## Source Set 划分
 
 | Source Set | 用途 |
 |---|---|
-| `commonMain` | 共享逻辑、Compose UI、`expect` 声明 |
+| `commonMain` | 共享逻辑、`expect` 声明 |
 | `androidMain` | Android `actual` 实现、仅 Android API |
-| `iosMain` | iOS `actual` 实现、仅 Apple API（如 `UIKit`） |
+| `iosMain` | iOS `actual` 实现、仅 Apple API |
 | `commonTest` | 不依赖平台的单元测试 |
 | `androidUnitTest` / `iosTest` | 平台相关测试 |
 
@@ -27,28 +28,17 @@ alwaysApply: false
 import android.os.Build
 
 // ✅ 在 commonMain 声明 expect，平台实现放对应 source set
-// commonMain/Platform.kt
 expect fun getPlatform(): Platform
-
-// androidMain/Platform.android.kt
-actual fun getPlatform(): Platform = AndroidPlatform()
 ```
 
 ## expect/actual 规范
 
 - `expect` 与 `actual` 保持相同包名和签名
 - 平台文件命名：`{Name}.android.kt`、`{Name}.ios.kt`
-- 优先用接口 + `expect fun` 工厂，而非大量零散 `expect` 声明
 - 能用 `commonMain` 纯 Kotlin 实现的，不要拆成 expect/actual
-
-## Compose UI
-
-- 共享 UI 组件、`@Composable` 入口（如 `App()`）放 `commonMain`
-- iOS 入口：`iosMain` 提供 `MainViewController()`，内部调用 `ComposeUIViewController { App() }`
-- 资源放 `shared/src/commonMain/composeResources/`，通过 `Res` 引用
 
 ## 依赖与测试
 
-- 依赖声明在 `shared/build.gradle.kts` 的 `sourceSets` 块，按 source set 区分
-- 平台专属依赖只加到对应 source set（如 `androidMain`），不放 `commonMain`
-- 共享逻辑测试写 `commonTest`；需要平台环境的测试放 `androidUnitTest` 或 `iosTest`
+- 依赖声明在 `shared/build.gradle.kts` 的 `sourceSets` 块
+- **禁止**在 `shared` 引入 Compose、SwiftUI 等 UI 框架依赖
+- 共享逻辑测试写 `commonTest`

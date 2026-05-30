@@ -1,10 +1,13 @@
 这是一个面向 Android 和 iOS 的 Kotlin Multiplatform 项目。
 
-* [/iosApp](./iosApp/iosApp) 包含 iOS 应用。即使使用 Compose Multiplatform 共享 UI，仍需要这个入口来启动 iOS 应用，也可以在这里添加 SwiftUI 代码。
+* [/shared](./shared/src) 存放跨平台**业务逻辑**（登录 Repository、ViewModel、`LoginBridge` 等），不包含 UI。
+* [/androidApp](./androidApp/src/main/kotlin) 使用 **Compose** 实现 Android 登录界面。
+* [/iosApp](./iosApp/iosApp) 使用 **SwiftUI** 实现 iOS 登录界面，通过 `Shared` 框架调用 Kotlin 逻辑。
 
-* [/shared](./shared/src) 用于在 Compose Multiplatform 应用之间共享的代码，包含以下子目录：
-  - [commonMain](./shared/src/commonMain/kotlin) 存放所有目标平台共用的代码。
-  - 其他目录存放仅针对对应平台编译的 Kotlin 代码。例如，若要在 iOS 端使用 Apple 的 CoreCrypto，可在 [iosMain](./shared/src/iosMain/kotlin) 中编写；若需编写 Desktop（JVM）相关代码，则使用 [jvmMain](./shared/src/jvmMain/kotlin)。
+`shared` 源码目录说明：
+
+- [commonMain](./shared/src/commonMain/kotlin) 存放所有目标平台共用的代码。
+- 其他目录存放仅针对对应平台编译的 Kotlin 代码。例如，若要在 iOS 端使用 Apple 的 API，可在 [iosMain](./shared/src/iosMain/kotlin) 中编写。
 
 ### 运行应用
 
